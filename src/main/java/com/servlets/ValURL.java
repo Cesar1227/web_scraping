@@ -98,7 +98,6 @@ public class ValURL extends HttpServlet {
                 out.println(element.nodeName()+" "+element.ownText());
             }
                 // In case of any IO errors, we want the messages written to the console
-
         }
     }
 
