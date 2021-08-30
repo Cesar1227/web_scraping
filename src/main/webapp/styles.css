@@ -7,10 +7,17 @@ body{
 	text-align: center;
 	font-size: xx-large;
 	width: 1050px;
-	height: 220px;
+	/*height: 220px;*/
+        height: auto;
+        padding-bottom: 10px;
 	/*margin-left: 140px;*/
 	margin-bottom: 40px;
 	background: aliceblue;
+}
+
+#btnsAdd-Del{
+    text-align: right;
+    padding-right: 200px;
 }
 
 #logoUrl{
@@ -40,11 +47,11 @@ body{
 	margin-left: 50px;
 }
 
-#url{
-	border: 1px solid #393939;
-	border-radius: 10px 10px 10px 10px;
-	width: 600px;
-    height: 60px;
+.url{
+    border: 1px solid #393939;
+    border-radius: 10px 10px 10px 10px;
+    width: 600px;
+    height: 30px;
     margin-bottom: 20px;
 }
 
@@ -99,6 +106,7 @@ body{
 	margin-left: 1em;
 }
 
+
 .menu li{
 	/*outline: 1px solid green;*/
 	box-shadow: 3px 0 rgba(29, 149, 173) inset;
@@ -108,6 +116,7 @@ body{
 	-o-transition: all .5s;
 	transition: all .5s;
 }
+
 
 .menu li:hover{
 	box-shadow: 15em 0 rgba(29, 149, 173) inset
@@ -207,12 +216,39 @@ thead, tbody { display: block; }
 	display: none;
 }
 
+.slideInfo.hide{
+    display:none;
+}
+
+.slideInfo.show{
+    display:block ;
+}
+
 ul li:hover a {
     background: rgba(29, 149, 173);
 }
 
+
+
+.menu a:target{
+    background: rgba(29, 149, 173);
+    box-shadow: -22px 0 rgba(29, 149, 173); 
+}
+
+#slideLeft{
+    float: left;
+    margin-left: -50px;
+    margin-top: 150px;
+}
+
+#slideRight{
+    float: right;
+    margin-right: -30px;
+    margin-top: 150px;
+}
+/*
 #sec-menu > ul > li > a:target {
     background: rgba(29, 149, 173);
-    box-shadow: -22px 0 rgba(29, 149, 173);
-  
+    box-shadow: -22px 0 rgba(29, 149, 173); 
 }
+*/
