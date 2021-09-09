@@ -22,7 +22,10 @@ function validar() {
 
 }
 
+
+            
 function agregarURL() {
+    if(nURLs<4){
     nURLs++;
     campoDiv = document.getElementById('inLinks');
     var elemento = document.createElement("input");
@@ -35,6 +38,7 @@ function agregarURL() {
     campoDiv.appendChild(elemento);
     clonarSeccion("informacionLink"+nURLs);
     slides = document.getElementsByClassName('slideInfo');
+}
 }
 
 function quitarURL() {
@@ -88,6 +92,7 @@ function nextSlide(){
 }
 
 function mostrar(){
+   
     var ele1=document.getElementById("informacionLink1");
     var men=document.getElementById("sec-menu");
     var cont=document.getElementById("contenido");
@@ -149,3 +154,54 @@ function seccion(num){
     }
 }
 
+
+
+function obtenerDatos() {
+    
+    var xhr = new XMLHttpRequest();
+    let dirUrl=document.getElementById("parametro").value;
+     console.log("URL:"+dirUrl);
+
+    dirUrl=dirUrl.split("\n");
+    console.log(dirUrl.length);
+    var url = "ValiURL?url=";
+    for(let i=0;i<dirUrl.length;i++){
+        if(i<1){
+            url=url+dirUrl[i];
+        }else{
+            url=url+"%20"+dirUrl[i];
+        }
+        
+    }
+    console.log(url);
+    xhr.open("GET", url, true);
+    xhr.onload = function (e) {
+        if (xhr.readyState = 4) {
+            if (xhr.status = 200) {
+                showScraping(xhr);
+            } else {
+                console.error(xhr.statusText);
+            }
+        }
+    };
+    xhr.onerror - function (e) {
+        console.error(xhr.statusText);
+    };
+    xhr.send(null);
+}
+
+function showScraping(xhr){
+    slides = document.getElementsByClassName('slideInfo');
+    //var links=json.links;
+    var elementsScc;
+    let cant=slides.length;
+    let i=0
+    var JSON=eval(xhr.responseText);
+    console.log(JSON[0].tourl);
+        //document.getElementById("tamkb").innerHTML=JSON.'0'.tamanopage;
+}
+
+window.onload = function() {
+  obtenerDatos();
+  seccion(0);
+};
