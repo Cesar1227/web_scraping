@@ -5,16 +5,24 @@
         <servlet-class>Servlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ValURL</servlet-name>
-        <servlet-class>com.servlets.ValURL</servlet-class>
+        <servlet-name>ValiURL</servlet-name>
+        <servlet-class>com.servlets.ValiURL</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ValiURL2</servlet-name>
+        <servlet-class>com.servlets.ValiURL2</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Servlet</servlet-name>
         <url-pattern>/Servlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ValURL</servlet-name>
-        <url-pattern>/ValURL</url-pattern>
+        <servlet-name>ValiURL</servlet-name>
+        <url-pattern>/ValiURL</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ValiURL2</servlet-name>
+        <url-pattern>/ValiURL2</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
