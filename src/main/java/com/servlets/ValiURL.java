@@ -52,7 +52,6 @@ public class ValiURL extends HttpServlet {
             out.println("<body>");
             //out.println("<h1>Servlet ValURL at " + request.getContextPath() + "</h1>");
             // out.println("<a href='index.jsp'>Inicio</a><br>");
-            
 
             out.println("</body>");
             out.println("</html>");
@@ -71,13 +70,12 @@ public class ValiURL extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try (PrintWriter out = response.getWriter()) {
-            
+
             String tourl = request.getParameter("url");
             ArrayList<ValidadorURL> urls=validarURLs(tourl);
             System.out.println("CANTIDAD DE URLS: "+urls.size()+" URLS:"+tourl);
             String jsons[]=lanzarHilos(urls.size(),urls);
             out.println(Arrays.toString(jsons));
-
         }
     }
 
@@ -99,7 +97,7 @@ public class ValiURL extends HttpServlet {
             System.out.println("CANTIDAD DE URLS: "+urls.size()+" URLS:"+tourl);
             String jsons[]=lanzarHilos(urls.size(),urls);
             out.println(Arrays.toString(jsons));
-           
+
         }
     }
 
@@ -107,11 +105,13 @@ public class ValiURL extends HttpServlet {
         ScrapingDocument SD = new ScrapingDocument();
         ArrayList<String> URLfins = SD.SplitURLs(tourl);
 
+
         ValidadorURL VU = new ValidadorURL();
 
         ValidadorURL VAURLS[] = new ValidadorURL[URLfins.size()];
         for (int k = 0; k < VAURLS.length; k++) {
             if (VU.urlV1(URLfins.get(k)) == true && VU.urlV2(URLfins.get(k)) == true) {
+
                 VAURLS[k] = new ValidadorURL(URLfins.get(k), true);
             } else {
                 VAURLS[k] = new ValidadorURL(URLfins.get(k), false);
@@ -126,8 +126,10 @@ public class ValiURL extends HttpServlet {
     private String[] lanzarHilos(int n, ArrayList<ValidadorURL> URLlist) throws IOException {
         
         Hilos hilos[] = new Hilos[n];
+
         for(int j = 0; j < n; j++){
             hilos[j]=new Hilos(URLlist.get(j).getTourl(),URLlist.get(j).isEstadopage());
+
         }
         for(int j = 0; j < n; j++){
             hilos[j].start();
@@ -141,12 +143,13 @@ public class ValiURL extends HttpServlet {
         }
         
         Gson gson = new Gson();
+
         String json[] = new String[n];                
+
         
         for (int i = 0; i < n; i++) {
             json[i]=gson.toJson(hilos[i].getScraping());            
         }
-
         return json;
     }
 

@@ -76,7 +76,6 @@ public class ScrapingDocument {
     public ScrapingDocument() {
     }
 
-
     /*
     @Override
     public void run(){
@@ -177,6 +176,7 @@ public class ScrapingDocument {
         for (int i = 0; i < enlcpages.size(); i++) {
             URL url = new URL(enlcpages.get(i));
             HttpURLConnection HC = (HttpURLConnection) url.openConnection();
+
             try {
                 if (HC.getResponseCode() >= 200 && HC.getResponseCode() <= 202) {
                     cds.add(HC.getResponseCode());
@@ -187,6 +187,7 @@ public class ScrapingDocument {
                 }
             } catch (Exception e) {
                 Logger.getLogger(ScrapingDocument.class.getName()).log(Level.WARNING, null, e);
+
             }
         }
         setCodes(cds);
@@ -205,7 +206,9 @@ public class ScrapingDocument {
 
     public ArrayList<String> SplitURLs(String URLs) {
         String[] URLsep = URLs.split(" ");
+
         System.out.println("Cantidad: " + URLsep.length);
+
         ArrayList<String> URLfins = new ArrayList<String>();
         for (int i = 0; i < URLsep.length; i++) {
             if (URLsep[i].trim().length() > 0) {

@@ -4,6 +4,7 @@ var moveSlides = true;
 var slides = document.getElementsByClassName('slideInfo');
 var slideToShow = 0;
 
+
 function validar() {
     var x = document.getElementById("sec-menu");
     var x2 = document.getElementById("contenido");
@@ -24,6 +25,7 @@ function validar() {
 
 
 
+
 function agregarURL() {
     if (nURLs < 4) {
         nURLs++;
@@ -39,6 +41,7 @@ function agregarURL() {
         clonarSeccion("informacionLink" + nURLs);
         slides = document.getElementsByClassName('slideInfo');
     }
+
 }
 
 function quitarURL() {
@@ -51,6 +54,7 @@ function quitarURL() {
         console.log("f1 hijo de: ", ultimo);
         contenedor.removeChild(ultimo);
         var seccion = document.getElementById("informacionLink" + nURLs);
+
         seccion.parentNode.removeChild(seccion);
         nURLs--;
         slides = document.getElementsByClassName('slideInfo');
@@ -62,7 +66,9 @@ function clonarSeccion(ide) {
     var original = document.getElementById("informacionLink1");
     var nuevo = original.cloneNode(true);
     nuevo.id = ide;
+
     nuevo.style.display = "none";
+
     destino = document.getElementById("contenedor");
     destino.appendChild(nuevo);
 }
@@ -78,6 +84,7 @@ function previousSlide() {
     if (moveSlides) {
         if (slideToShow > 0) {
             slide(slideToShow - 1);
+
         }
     }
 }
@@ -87,6 +94,7 @@ function nextSlide() {
         console.log("cant slides " + slides.length)
         if (slideToShow < slides.length - 1) {
             slide(slideToShow + 1);
+
         }
     }
 }
@@ -102,6 +110,7 @@ function mostrar() {
 }
 
 function seccion(num) {
+
     if (num == 0) {
         console.log("definido");
         for (i = 0; i < scc.length; i++)
@@ -176,6 +185,7 @@ function obtenerDatos() {
         } else {
             url = url + "%20" + dirUrl[i];
         }
+
 
     }
     console.log(url);
@@ -394,4 +404,5 @@ window.onload = function () {
     obtenerDatos();
     seccion(0);
 };
+
 

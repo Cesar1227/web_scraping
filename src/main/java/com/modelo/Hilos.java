@@ -37,7 +37,7 @@ public class Hilos extends Thread{
             Logger.getLogger(Hilos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public ScrapingDocument getScraping() {
         return scraping;
     }
