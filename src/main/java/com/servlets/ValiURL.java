@@ -52,51 +52,6 @@ public class ValiURL extends HttpServlet {
             out.println("<body>");
             //out.println("<h1>Servlet ValURL at " + request.getContextPath() + "</h1>");
             // out.println("<a href='index.jsp'>Inicio</a><br>");
-            String tourl = request.getParameter("url");
-            out.println("Sitio web: <br>" + tourl + "<br>");
-            ScrapingDocument SD = new ScrapingDocument(tourl);
-            ArrayList<String> enlcpages = SD.getEnlcpages();
-            ArrayList<Boolean> brokens = SD.getEnlcbrokens();
-            ArrayList<String> nenlcimgs = SD.getEnlcimg();
-            ArrayList<String> tenlc = SD.getTipo_enlc();
-            int numlineas = SD.getNumlineas();
-            int lineas_size[] = SD.getTamlineas();
-            int numenlc = enlcpages.size();
-            if (SD.isContforms() == true) {
-                out.println("<br>El sitio contiene formularios<br>");
-            } else {
-                out.println("<br>El sitio NO contiene formularios<br>");
-            }
-            //out.println(SD.isContlog());
-            boolean existelog = SD.isContlog();
-            if (existelog) {
-                out.println("<br>El sitio contiene opción de logueo<br>");
-            } else {
-                out.println("<br>El sitio NO contiene opción de logueo<br>");
-            }
-            /*if(SD.clog()==true){
-                out.println("<br>El sitio contiene opción de logueo<br>");
-                }else{
-                    out.println("<br>El sitio NO contiene opción de logueo<br>");
-                }*/
-
-            out.println("<br>Enlaces: <br>");
-            for (int i = 0; i < enlcpages.size(); i++) {
-                if (brokens.get(i) == true) {
-                    out.println("Enlace #" + (i + 1) + ": " + enlcpages.get(i) + " - Tipo: " + tenlc.get(i) + " - ESTADO: ACTIVO - Code: " + SD.getCodes().get(i) + " <br>");
-                } else {
-                    out.println("Enlace #" + (i + 1) + ": " + enlcpages.get(i) + " - Tipo: " + tenlc.get(i) + " - ESTADO: ROTO o PROHIBIDO - Code: " + SD.getCodes().get(i) + " <br>");
-                }
-            }
-            out.println("<br>La cantidad de enlaces es: " + SD.getNumenlc() + " <br><br>");
-            out.println("<br>Imágenes - Descarga: <br>");
-            for (int j = 0; j < nenlcimgs.size(); j++) {
-                out.println("Enlace a imagen #" + (j + 1) + ": " + nenlcimgs.get(j) + " <br> ");
-            }
-            //out.println(lineas_size.length);
-            for (int k = 0; k < lineas_size.length; k++) {
-                out.println("Linea #" + (k + 1) + " - Cantidad de lineas: " + lineas_size[k] + "<br>");
-            }
 
             out.println("</body>");
             out.println("</html>");
@@ -115,29 +70,12 @@ public class ValiURL extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try (PrintWriter out = response.getWriter()) {
+
             String tourl = request.getParameter("url");
             ArrayList<ValidadorURL> urls=validarURLs(tourl);
             System.out.println("CANTIDAD DE URLS: "+urls.size()+" URLS:"+tourl);
             String jsons[]=lanzarHilos(urls.size(),urls);
             out.println(Arrays.toString(jsons));
-            /*out.println("<a href='index.jsp'>Inicio</a><br>");
-            String tourl = request.getParameter("url");
-
-            //out.println("URL: "+tourl);
-            ValidadorURL vurl = new ValidadorURL();
-            boolean estado = vurl.urlV1(tourl);
-            boolean estado2 = vurl.urlV2(tourl);
-            // out.println(estado);
-            if (estado == true || estado2 == true) {
-                ScrapingDocument SD = new ScrapingDocument(tourl);
-                out.println("hola");
-                double tamaño = SD.getTamanopage();
-                out.println("El tamaño del sitio web es: " + tamaño + " KBs <br><br>");
-                processRequest(request, response);
-            } else {
-                out.println("URL no valida.");
-                //out.println("<a href='index.jsp'>Inicio</a><br>");
-            }*/
         }
     }
 
@@ -159,17 +97,7 @@ public class ValiURL extends HttpServlet {
             System.out.println("CANTIDAD DE URLS: "+urls.size()+" URLS:"+tourl);
             String jsons[]=lanzarHilos(urls.size(),urls);
             out.println(Arrays.toString(jsons));
-            /*ScrapingDocument SD = new ScrapingDocument(tourl);
-            ArrayList<String> URLfins = SD.SplitURLs(tourl);
 
-            //  out.println(tourl);
-            ValidadorURL vurl = new ValidadorURL();
-            boolean estado = vurl.urlV1(tourl);
-            if (estado == true) {
-                processRequest(request, response);
-            } else {
-                out.println("URL no valida.");
-            }*/
         }
     }
 
@@ -177,14 +105,13 @@ public class ValiURL extends HttpServlet {
         ScrapingDocument SD = new ScrapingDocument();
         ArrayList<String> URLfins = SD.SplitURLs(tourl);
 
-        /*for (int j = 0; j < URLfins.size(); j++) {
-                    out.println(URLfins.get(j));
-                }*/
+
         ValidadorURL VU = new ValidadorURL();
 
         ValidadorURL VAURLS[] = new ValidadorURL[URLfins.size()];
         for (int k = 0; k < VAURLS.length; k++) {
-            if (VU.urlV1(URLfins.get(k)) == true || VU.urlV2(URLfins.get(k)) == true) {
+            if (VU.urlV1(URLfins.get(k)) == true && VU.urlV2(URLfins.get(k)) == true) {
+
                 VAURLS[k] = new ValidadorURL(URLfins.get(k), true);
             } else {
                 VAURLS[k] = new ValidadorURL(URLfins.get(k), false);
@@ -193,19 +120,16 @@ public class ValiURL extends HttpServlet {
 
         ArrayList<ValidadorURL> URLlist = new ArrayList<ValidadorURL>(Arrays.asList(VAURLS));
 
-        /*for (int j = 0; j < URLlist.size(); j++) {
-            out.println(URLlist.get(j).getTourl());
-            out.println(URLlist.get(j).isEstadopage());
-        }*/
         return URLlist;
     }
 
     private String[] lanzarHilos(int n, ArrayList<ValidadorURL> URLlist) throws IOException {
         
         Hilos hilos[] = new Hilos[n];
-        
+
         for(int j = 0; j < n; j++){
-            hilos[j]=new Hilos(URLlist.get(j).getTourl());
+            hilos[j]=new Hilos(URLlist.get(j).getTourl(),URLlist.get(j).isEstadopage());
+
         }
         for(int j = 0; j < n; j++){
             hilos[j].start();
@@ -219,13 +143,13 @@ public class ValiURL extends HttpServlet {
         }
         
         Gson gson = new Gson();
-        String json[] = new String[n];
-                
+
+        String json[] = new String[n];                
+
         
         for (int i = 0; i < n; i++) {
             json[i]=gson.toJson(hilos[i].getScraping());            
         }
-        System.out.println("JSONS:" +Arrays.toString(json));
         return json;
     }
 

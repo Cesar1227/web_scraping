@@ -38,7 +38,8 @@ body{
 #contenedor{
     /*outline: 1px solid green;*/
     float: left;
-    height: 760px;
+    height: auto;
+
     width: 1070px;
     margin-left: 140px;
 
@@ -147,7 +148,7 @@ h2{
 }
 
 #cont-linea{
-    margin-left: 100px;
+    margin-left: 150px;
 }
 
 .inStyle{
@@ -195,7 +196,13 @@ th {
 
 thead, tbody { display: block; }
 
-#bodyTabla {
+
+#bodyTablaOcurrencia {
+    height: 112px;       
+    overflow-y: auto;    
+
+}
+#bodyTablaLineas {
     height: 112px;       
     overflow-y: auto;    
 

@@ -26,15 +26,15 @@ public class ScrapingDocument {
 
     private String tourl;
     private double tamanopage;
-    private ArrayList<String> enlcimg;
-    private ArrayList<String> enlcpages;
-    private ArrayList<String> tipo_enlc;
-    private ArrayList<Boolean> enlcbrokens;
     private int numenlc;
     private int numlineas;
     private int tamlineas[];
     private boolean contforms;
     private boolean contlog;
+    private ArrayList<String> enlcimg;
+    private ArrayList<String> enlcpages;
+    private ArrayList<String> tipo_enlc;
+    private ArrayList<Boolean> enlcbrokens;
     private ArrayList<Integer> codes;
     private ArrayList<String> palabras;
     private ArrayList<Integer> ocupalabras;
@@ -52,11 +52,29 @@ public class ScrapingDocument {
         this.contforms = cform(document);
         this.contlog = clog(document);
         this.ocupalabras = ocuPalabras(document);
+        this.listaarch = enlcarch(document);
+    }
+
+    public ScrapingDocument(String url, boolean noValido) {
+        this.tourl = url + "URL NO VALIDA";
+        this.tamanopage = 0;
+        this.enlcpages = new ArrayList<>();
+        this.enlcbrokens = new ArrayList<>();
+        this.numenlc = 0;
+        this.tipo_enlc = new ArrayList<>();
+        this.enlcimg = new ArrayList<>();
+        this.numlineas = 0;
+        this.tamlineas = new int[0];
+        this.contforms = false;
+        this.contlog = false;
+        this.ocupalabras = new ArrayList<>();
+        this.listaarch = new ArrayList<>();
+        this.codes = new ArrayList<>();
+        this.palabras = new ArrayList<>();
     }
 
     public ScrapingDocument() {
     }
-    
 
     /*
     @Override
@@ -137,8 +155,18 @@ public class ScrapingDocument {
     public double tamaño(String tourl) throws MalformedURLException, IOException {
         URL url = new URL(tourl);
         HttpURLConnection HC = (HttpURLConnection) url.openConnection();
-        DecimalFormat formato1 = new DecimalFormat("#,###");
-        double CL = Double.parseDouble(formato1.format(HC.getContentLength() / 1024.00));
+        double CL = 0;
+        try {
+            DecimalFormat formato1 = new DecimalFormat("#,###");
+            CL = Double.parseDouble(formato1.format(HC.getContentLength() / 1024.00));
+        } catch (Exception e) {
+            try {
+                DecimalFormat formato1 = new DecimalFormat("#.###");
+                CL = Double.parseDouble(formato1.format(HC.getContentLength() / 1024.00));
+            } catch (Exception ex) {
+                Logger.getLogger(ScrapingDocument.class.getName()).log(Level.WARNING, null, e);
+            }
+        }
         return CL;
     }
 
@@ -148,12 +176,18 @@ public class ScrapingDocument {
         for (int i = 0; i < enlcpages.size(); i++) {
             URL url = new URL(enlcpages.get(i));
             HttpURLConnection HC = (HttpURLConnection) url.openConnection();
-            if (HC.getResponseCode() >= 200 && HC.getResponseCode() <= 202) {
-                cds.add(HC.getResponseCode());
-                brokens.add(true);
-            } else {
-                cds.add(HC.getResponseCode());
-                brokens.add(false);
+
+            try {
+                if (HC.getResponseCode() >= 200 && HC.getResponseCode() <= 202) {
+                    cds.add(HC.getResponseCode());
+                    brokens.add(true);
+                } else {
+                    cds.add(HC.getResponseCode());
+                    brokens.add(false);
+                }
+            } catch (Exception e) {
+                Logger.getLogger(ScrapingDocument.class.getName()).log(Level.WARNING, null, e);
+
             }
         }
         setCodes(cds);
@@ -172,7 +206,9 @@ public class ScrapingDocument {
 
     public ArrayList<String> SplitURLs(String URLs) {
         String[] URLsep = URLs.split(" ");
-        System.out.println("Cantidad: "+URLsep.length);
+
+        System.out.println("Cantidad: " + URLsep.length);
+
         ArrayList<String> URLfins = new ArrayList<String>();
         for (int i = 0; i < URLsep.length; i++) {
             if (URLsep[i].trim().length() > 0) {
@@ -293,6 +329,23 @@ public class ScrapingDocument {
         }
         setPalabras(plbrs);
         return ocuplbrs;
+    }
+
+    private ArrayList<String> enlcarch(Document document) {
+        String extensiones = ".aac,.adt,.adts,.accdb,.accde,.accdr,.accdt,.aif,.aifc,.aiff,.aspx,.avi,.bat,.bin,.bmp,.cab,.cda,.csv,.dif,.dll,.doc,.docm,.docx,.dot,.dotx,.eml,.eps,.exe,.flv,.gif,.htm,.html,.ini,.iso,.jar,.jpg,.jpeg,.m4a,.mdb,.mid,.midi,.mkv,.mov,.mp3,.mp4,.mpeg,.mpg,.msi,.mui,.pdf,.pgn,.pot,.potm,.potx,.ppam,.pps,.ppsm,.ppsx,.ppt,.pptm,.pptx,.psd,.pst,.pub,.rar,.rtf,.sldm,.sldx,.swf,.sys,.tif,.tiff,.tmp,.txt,.vob,.vsd,.vsdm,.vsdx,.vss,.vssm,.vst,.vstm,.vstx,.wav,.wbk,.wks,.wma,.wmd,.wmv,.wmz,.wms,.wpd,.wp5,.xla,.xlam,.xll,.xlm,.xls,.xlsm,.xlsx,.xlt,.xltm,.xltx,.xps,.zip";
+        String extens[] = extensiones.split(",");
+        ArrayList<String> enarch = new ArrayList<String>();
+        Elements enlcElements = document.select("a[href]");
+        for (Element enlcElement : enlcElements) {
+            for (int i = 0; i < extens.length; i++) {
+                String strenlcURL = enlcElement.attr("abs:href");
+                if (strenlcURL.contains("http") == true && enlcElement.attr("abs:href").toLowerCase().contains(extens[i]) == true) {
+                    enarch.add(strenlcURL);
+                    break;
+                }
+            }
+        }
+        return enarch;
     }
 
     // <editor-fold defaultstate="collapsed" desc="Setters & Getters">>  

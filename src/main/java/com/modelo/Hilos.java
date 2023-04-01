@@ -17,15 +17,22 @@ public class Hilos extends Thread{
     
     private ScrapingDocument scraping;
     private String url;
+    private boolean val;
 
-    public Hilos(String url) {
+    public Hilos(String url,boolean valido) {
         this.url=url;
+        this.val=valido;
     }
     
     @Override
     public void run(){
         try {
-            this.scraping = new ScrapingDocument(url);
+            if(val){
+                this.scraping = new ScrapingDocument(url);
+            }else{
+                this.scraping = new ScrapingDocument(url,val);
+            }
+            
         } catch (IOException ex) {
             Logger.getLogger(Hilos.class.getName()).log(Level.SEVERE, null, ex);
         }
