@@ -1,2 +1,6 @@
+com\modelo\ScrapingDocument.class
+com\database\persistencia.class
+com\modelo\JsonA.class
+com\servlets\ValiURL.class
+com\modelo\Hilos.class
 com\modelo\ValidadorURL.class
-com\servlets\ValURL.class
